@@ -1,9 +1,6 @@
 <template>
     <div>
-        <SelectComponent
-            :select-options="selectOptions"
-            @currencyChange="onCurrencyChange">
-        </SelectComponent>
+        <SelectComponent @currencyChange="onCurrencyChange"> </SelectComponent>
 
         <div class="block slider-container">
             <vue-slider v-model="clientSliderValue"
