@@ -1,19 +1,9 @@
 <template>
     <div>
-        <div class="currency-select-container">
-            Currency :
-            <el-select placeholder="Select"
-                       v-model="selectedCurrency"
-                       @change="onCurrencyChange">
-
-                <el-option size="small"
-                           v-for="item in selectOptions"
-                           :key="item.value"
-                           :label="item.label"
-                           :value="item.value">
-                </el-option>
-            </el-select>
-        </div>
+        <SelectComponent
+            :select-options="selectOptions"
+            @currencyChange="onCurrencyChange">
+        </SelectComponent>
 
         <div class="block slider-container">
             <vue-slider v-model="clientSliderValue"
@@ -62,10 +52,11 @@
     import {Constants} from "../shared/constants";
     import {CalcFormulas} from "../shared/calcFormulas";
     import {Utils} from "../shared/utils";
+    import SelectComponent from "./SelectComponent";
 
     export default {
         name: "BitcoinComponent",
-        components: {vueSlider},
+        components: {SelectComponent, vueSlider},
         mixins: [CalcFormulas, Utils],
 
         data() {
@@ -78,18 +69,7 @@
                 selectedCurrency: 'usd',
 
                 recordLoadStep: 10,
-                recordLimit: 10,
-
-                selectOptions: [
-                    {
-                        value: 'usd',
-                        label: 'USD'
-                    },
-                    {
-                        value: 'eur',
-                        label: 'EUR'
-                    }
-                ]
+                recordLimit: 10
             }
         },
 
@@ -250,7 +230,8 @@
                 this.btcData.selectedCurrency = this.selectedCurrency;
             },
 
-            onCurrencyChange() {
+            onCurrencyChange($event) {
+                this.selectedCurrency = $event;
                 this.loadTableData();
                 this.initColumns();
             }
@@ -272,17 +253,5 @@
         display: flex;
         align-items: center;
         justify-content: flex-end;
-    }
-
-    div .currency-select-container {
-        padding-bottom: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-    }
-
-    .el-select {
-        width: 100px;
-        padding-left: 5px;
     }
 </style>
